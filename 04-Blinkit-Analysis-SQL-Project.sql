@@ -1,11 +1,12 @@
--- DISCLAIMER:
--- This analysis has been conducted solely for educational and practice purposes in learning SQL and data
--- analytics. The dataset used is hypothetical or publicly available and does not reflect the operations,
--- performance, or strategies of any real-world company. Any resemblance to actual companies, campaigns, or
--- individuals is purely coincidental.
+/*
+DISCLAIMER:
+This analysis has been conducted solely for educational and practice purposes in learning SQL and data
+analytics. The dataset used is hypothetical or publicly available and does not reflect the operations,
+performance, or strategies of any real-world company. Any resemblance to actual companies, campaigns, or
+individuals is purely coincidental.
 
--- DATA SOURCE: https://www.youtube.com/watch?v=VCE62a9Z5Vc&list=PLVOfSd1Syc0FamdRp-yypwMx2AMVpI0Cx
-
+DATA SOURCE: https://www.youtube.com/watch?v=VCE62a9Z5Vc&list=PLVOfSd1Syc0FamdRp-yypwMx2AMVpI0Cx
+*/
 
 USE blinkit_database;
 
@@ -23,15 +24,6 @@ CREATE TABLE blinkit_customer_feedback
     `upload_timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`) 
 );
-
-SET GLOBAL local_infile = 1;
-
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_customer_feedback1.csv'
-INTO TABLE blinkit_customer_feedback
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
 
 CREATE TABLE blinkit_customers
 (
@@ -51,13 +43,6 @@ CREATE TABLE blinkit_customers
 	PRIMARY KEY(`id`) 
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_customers.csv'
-INTO TABLE blinkit_customers
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
-
 CREATE TABLE blinkit_delivery_performance
 (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -73,13 +58,6 @@ CREATE TABLE blinkit_delivery_performance
 	PRIMARY KEY(`id`) 
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_delivery_performance.csv'
-INTO TABLE blinkit_delivery_performance
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
-
 CREATE TABLE blinkit_inventory
 (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -90,14 +68,6 @@ CREATE TABLE blinkit_inventory
 	`upload_timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`) 
 );
-
-
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_inventory.csv'
-INTO TABLE blinkit_inventory
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
 
 CREATE TABLE blinkit_marketing_performance
 (
@@ -117,13 +87,6 @@ CREATE TABLE blinkit_marketing_performance
 	PRIMARY KEY(`id`) 
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_marketing_performance.csv'
-INTO TABLE blinkit_marketing_performance
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
-
 CREATE TABLE blinkit_order_items
 (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -135,13 +98,6 @@ CREATE TABLE blinkit_order_items
 	`upload_timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`) 
 );
-
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_order_items.csv'
-INTO TABLE blinkit_order_items
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
 
 CREATE TABLE blinkit_orders
 (
@@ -160,13 +116,6 @@ CREATE TABLE blinkit_orders
 	PRIMARY KEY(`id`) 
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_orders.csv'
-INTO TABLE blinkit_orders
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
-
 CREATE TABLE blinkit_products 
 (
 	`id`	INT NOT NULL AUTO_INCREMENT,
@@ -184,13 +133,6 @@ CREATE TABLE blinkit_products
 	PRIMARY KEY(`id`) 
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/blinkit_products.csv'
-INTO TABLE blinkit_products
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
-
 CREATE TABLE category_icons1
 (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -199,13 +141,6 @@ CREATE TABLE category_icons1
 	`upload_timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`) 
 );
-
-LOAD DATA LOCAL INFILE 'C:/Users/billy/Desktop/DataSets/Blinkit Dataset/category_icons1.csv'
-INTO TABLE category_icons1
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
-IGNORE 1 LINES;
 
 CREATE TABLE blinkit_combined_view AS
 SELECT 
@@ -286,24 +221,17 @@ LEFT JOIN category_icons1 ci
     cf.rating AS star,
     ci.Img AS img,
     cf.feedback_date AS `Date`
-
 FROM blinkit_orders o
-
 INNER JOIN blinkit_customers c
     ON o.customer_id = c.customer_id
-
 INNER JOIN blinkit_order_items oi
     ON o.order_id = oi.order_id
-
 INNER JOIN blinkit_products p
     ON oi.product_id = p.product_id
-
 INNER JOIN blinkit_delivery_performance dp
     ON o.order_id = dp.order_id
-
 INNER JOIN blinkit_customer_feedback cf
     ON o.order_id = cf.order_id
-
 INNER JOIN category_icons1 ci
     ON p.category = ci.category;
     
@@ -335,29 +263,23 @@ SELECT
     o.delivery_status,
     oi.quantity,
     o.order_total AS Total_order_amount
-
 FROM blinkit_orders o
-
 LEFT JOIN blinkit_customers c
     ON o.customer_id = c.customer_id
-
 LEFT JOIN blinkit_order_items oi
     ON o.order_id = oi.order_id
-
 LEFT JOIN blinkit_products p
     ON oi.product_id = p.product_id
-
 LEFT JOIN blinkit_delivery_performance dp
     ON o.order_id = dp.order_id
-
 LEFT JOIN blinkit_customer_feedback cf
     ON o.order_id = cf.order_id
-
 LEFT JOIN category_icons1 ci
     ON p.category = ci.category;
 
 -- BUSINESS ANALYSIS QUESTIONS
 -- 1. Which products generate the most revenue?
+
 SELECT 	boi.product_id, 
 		product_name,
 		SUM(quantity * unit_price) AS total_revenue
@@ -371,6 +293,7 @@ LIMIT 10;
 
 
 -- 2. What is the average order value per customer?
+
 SELECT
 	customer_id,
     customer_name,
@@ -384,6 +307,7 @@ ORDER BY avg_order_value DESC;
 
 
 -- 3. Which categories are selling the most in terms of units and revenue?
+
 SELECT 	
 	boi.product_id, 
 	product_name,
@@ -401,6 +325,7 @@ ORDER BY
 	total_units_sold DESC;
 
 -- 4. Who are the top 10 loyal customers based on order frequency?
+
 SELECT
     customer_id,
     COUNT(*) AS total_orders
@@ -411,19 +336,20 @@ LIMIT 10;
 
 -- OPERATIONS AND DELIVERY
 -- 5. Which delivery agents or time slots have the most delays?
+
 SELECT
     delivery_partner_id,
     COUNT(*) AS total_deliveries,
     SUM(CASE 
             WHEN delivery_status IN ('Slightly Delayed', 'Delayed') 
-            THEN 1 ELSE 0 
-        END) AS delay_count
+            THEN 1 ELSE 0 END) AS delay_count
 FROM blinkit_delivery_performance
 GROUP BY delivery_partner_id
 ORDER BY delay_count DESC;
 
 
 -- 6. What percent of orders are delivered on time?
+
 SELECT 	
     ROUND((COUNT(CASE WHEN delivery_status = 'On Time' THEN 1 END) * 100.0) / 
         COUNT(delivery_status), 
@@ -432,6 +358,7 @@ FROM blinkit_delivery_performance;
 
 -- MARKETING PERFORMANCE
 -- 7. Which campaigns had the highest conversion rates?
+
 SELECT
 	campaign_id,
     campaign_name,
@@ -445,6 +372,7 @@ GROUP BY
 ORDER BY conversionRate_percentage DESC;
 
 -- 8. What is the most effective campaign that gathered the most revenue?
+
 SELECT
 	campaign_id,
     campaign_name,
@@ -456,6 +384,7 @@ GROUP BY
 ORDER BY total_revenue DESC;
 
 -- 9. What is the ROI (return on investment) per marketing channel?
+
 SELECT
     channel,
     SUM(revenue_generated) AS total_revenue,
@@ -467,6 +396,7 @@ ORDER BY ROI_Percentage DESC;
 
 -- CUSTOMER FEEDBACK
 -- 10. What is the average rating per product or category?
+
 SELECT
 	feedback_category,
     AVG(rating) AS average_rating
@@ -475,6 +405,7 @@ GROUP BY feedback_category
 ORDER BY average_rating DESC;
 
 -- 11. Which product categories receive the most negative feedback?
+
 SELECT
     feedback_category,
     SUM(CASE WHEN sentiment = 'Negative' THEN 1 ELSE 0 END) AS negative_feedback
@@ -483,6 +414,7 @@ GROUP BY feedback_category
 ORDER BY negative_feedback DESC;
 
 -- 12. Do delays correlate with lower customer ratings?
+
 SELECT 
     delivery_status,
     COUNT(feedback_id) AS total_feedbacks,
@@ -496,6 +428,7 @@ ORDER BY average_rating ASC;
 
 -- INVENTORY AND PRODUCTS ANALYSIS
 -- 13. Which products are frequently damaged?
+
 SELECT
     bp.product_id,
     bp.product_name,
@@ -509,6 +442,7 @@ HAVING total_damaged > 0
 ORDER BY total_damaged DESC;
 
 -- 14. Which product/items has the highest sales by revenue
+
 SELECT 
     boi.product_id,
     bp.product_name,
@@ -521,6 +455,7 @@ GROUP BY boi.product_id, bp.product_name
 ORDER BY total_revenue DESC;
 
 -- 15. Which products/items has the highest sales by unit sold
+
 SELECT 
     boi.product_id,
     bp.product_name,
@@ -533,6 +468,7 @@ ORDER BY total_units_sold DESC;
 
 -- RETENTION AND CHURN
 -- 16. How many customers placed only one order and never returned?
+
 SELECT 
     COUNT(*) AS one_timeCustomers
 FROM (
@@ -544,6 +480,7 @@ FROM (
 ) AS single_orderCustomers;
 
 -- 17 What is the time gap between first and last order per customer?
+
 SELECT 
     customer_id,
     MIN(order_date) AS first_orderDate,
@@ -554,6 +491,7 @@ GROUP BY customer_id
 ORDER BY days_betweenOrders DESC;
 
 -- 18. Which customer segment shows highest repeat order rate?
+
 SELECT
     bc.customer_segment,
     COUNT(DISTINCT bo.customer_id) AS total_customers_with_orders,
@@ -570,10 +508,12 @@ GROUP BY bc.customer_segment
 ORDER BY repeat_order_rate_percentage DESC;
 
 
--- DISCLAIMER:
--- This analysis has been conducted solely for educational and practice purposes in learning SQL and data
--- analytics. The dataset used is hypothetical or publicly available and does not reflect the operations,
--- performance, or strategies of any real-world company. Any resemblance to actual companies, campaigns, or
--- individuals is purely coincidental.
+/*
+DISCLAIMER:
+This analysis has been conducted solely for educational and practice purposes in learning SQL and data
+analytics. The dataset used is hypothetical or publicly available and does not reflect the operations,
+performance, or strategies of any real-world company. Any resemblance to actual companies, campaigns, or
+individuals is purely coincidental.
 
--- DATA SOURCE: https://www.youtube.com/watch?v=VCE62a9Z5Vc&list=PLVOfSd1Syc0FamdRp-yypwMx2AMVpI0Cx
+DATA SOURCE: https://www.youtube.com/watch?v=VCE62a9Z5Vc&list=PLVOfSd1Syc0FamdRp-yypwMx2AMVpI0Cx
+*/v=VCE62a9Z5Vc&list=PLVOfSd1Syc0FamdRp-yypwMx2AMVpI0Cx
